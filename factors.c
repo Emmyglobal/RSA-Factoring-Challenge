@@ -1,23 +1,52 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int main()
+void func(long long int ben)
 {
-    long long int num = 239809320265259;
-    long int factor1 = 2;
-    long int factor2;
+        long long int i;
 
-    while (num % factor1)
-    {
-        if (factor1 <= num)
+        i = 2;
+        while (1)
         {
-            factor1++;
+                if (ben % i == 0)
+                {
+                        printf("%lld=%lld*%lld\n", ben, ben / i, i);
+                        break;
+                }
+                else
+                        i++;
         }
-        else {
-            return (-1);
-        }
-    }
+}
 
-    factor2 = num / factor1;
-    printf("%lld = %ld * %ld\n", num, factor2, factor1);
-    return (0);
+int main(int argc, char **argv)
+{
+        if (argc != 2)
+        {
+                perror("invalid arguement");
+                exit(EXIT_FAILURE);
+        }
+
+        char *buff;
+        size_t len;
+        FILE *fp = NULL;
+        long long int ben;
+
+        fp = fopen(argv[1], "r");
+
+        if (fp == NULL)
+        {
+		perror("couldn't open file");
+                exit(EXIT_FAILURE);
+        }
+        else
+        {
+                while (getline(&buff, &len, fp) != -1)
+                {
+                        ben = atoll(buff);
+                        func(ben);
+                }
+        }
+        fclose(fp);
+        return (0);
 }
